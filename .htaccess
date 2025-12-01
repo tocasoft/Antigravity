@@ -1,36 +1,22 @@
 # Habilitar el motor de reescritura
+Options +FollowSymLinks
 RewriteEngine On
 
 # -------------------------------------------------------------------------
 # EJEMPLOS DE ENMASCARAMIENTO DE URL (URL MASKING)
-# Basado en: https://ultahost.com/knowledge-base/url-masking-using-htaccess/
 # -------------------------------------------------------------------------
 
-# 1. Enmascaramiento Simple
-# Esto mostrará el contenido de 'pagina-real.html' cuando el usuario visite 'mi-pagina-bonita'
-# La URL en el navegador se mantendrá como 'mi-pagina-bonita'
-# Reemplaza 'mi-pagina-bonita' y 'pagina-real.html' con tus propios nombres.
-RewriteRule ^test.geniusdevelops.com/$ index.html [L]
-
-# 2. Enmascaramiento de Directorios
-# Muestra 'carpeta-real/algo' cuando visitan 'carpeta-bonita/algo'
-# RewriteRule ^carpeta-bonita/(.*)$ carpeta-real/$1 [L]
+# Si quieres que el dominio "test.geniusdevelops.com" muestre "index.html"
+# (Esto es útil si el dominio apunta a una carpeta y quieres forzar el archivo)
+RewriteCond %{HTTP_HOST} ^test\.geniusdevelops\.com$ [NC]
+RewriteRule ^$ index.html [L]
 
 # -------------------------------------------------------------------------
 # CONFIGURACIÓN COMÚN: ELIMINAR EXTENSIÓN .HTML
 # -------------------------------------------------------------------------
-# Esto permite acceder a "contacto" y que el servidor muestre "contacto.html"
-# sin cambiar la URL en el navegador.
-
 # Si el archivo solicitado no es un directorio
 RewriteCond %{REQUEST_FILENAME} !-d
 # Y si el archivo con extensión .html existe
 RewriteCond %{REQUEST_FILENAME}.html -f
 # Entonces reescribe la solicitud internamente a .html
 RewriteRule ^(.*)$ $1.html [L]
-
-# -------------------------------------------------------------------------
-# FORZAR HTTPS (Opcional, recomendado)
-# -------------------------------------------------------------------------
-# RewriteCond %{HTTPS} off
-# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]

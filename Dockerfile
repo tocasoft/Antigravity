@@ -1,8 +1,11 @@
 # Usar una imagen base ligera de Nginx
 FROM nginx:alpine
 
-# Copiar el archivo index.html al directorio predeterminado de Nginx
-COPY index.html /usr/share/nginx/html/index.html
+# Copiar todos los archivos al directorio predeterminado de Nginx
+COPY . /usr/share/nginx/html/
+
+# Copiar la configuración personalizada de Nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Exponer el puerto 80
 EXPOSE 80
