@@ -7,9 +7,8 @@ RUN sed -i '/<Directory "\/usr\/local\/apache2\/htdocs">/,/<\/Directory>/ s/Allo
 # Enable mod_rewrite (usually enabled by default, but good to ensure)
 RUN sed -i 's/#LoadModule rewrite_module modules\/mod_rewrite.so/LoadModule rewrite_module modules\/mod_rewrite.so/' /usr/local/apache2/conf/httpd.conf
 
-# Set ServerName to localhost to avoid "Could not reliably determine the server's fully qualified domain name" warning
-# and prevent potential IP redirects
-RUN echo "ServerName localhost" >> /usr/local/apache2/conf/httpd.conf
+# Set ServerName to the actual domain to prevent IP redirects
+RUN echo "ServerName test.geniusdevelops.com" >> /usr/local/apache2/conf/httpd.conf
 
 # Copy all files (including .htaccess and index.html) to the apache document root
 COPY . /usr/local/apache2/htdocs/
