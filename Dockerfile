@@ -7,6 +7,9 @@ RUN sed -i '/<Directory "\/usr\/local\/apache2\/htdocs">/,/<\/Directory>/ s/Allo
 # Enable mod_rewrite (usually enabled by default, but good to ensure)
 RUN sed -i 's/#LoadModule rewrite_module modules\/mod_rewrite.so/LoadModule rewrite_module modules\/mod_rewrite.so/' /usr/local/apache2/conf/httpd.conf
 
+# Enable mod_headers
+RUN sed -i 's/#LoadModule headers_module modules\/mod_headers.so/LoadModule headers_module modules\/mod_headers.so/' /usr/local/apache2/conf/httpd.conf
+
 # Set ServerName to the actual domain to prevent IP redirects
 RUN echo "ServerName test.geniusdevelops.com" >> /usr/local/apache2/conf/httpd.conf
 

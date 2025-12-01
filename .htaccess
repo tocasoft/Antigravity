@@ -1,13 +1,26 @@
+# 1. Prevent Apache from generating redirects using the internal IP/Port
+DirectorySlash Off
+UseCanonicalName Off
+
+# 2. Add a debug header to verify .htaccess is being read
+<IfModule mod_headers.c>
+    Header set X-Debug-Htaccess "Active"
+</IfModule>
+
 # Enable Rewrite Engine
 RewriteEngine On
 
-# 1. Force root to redirect to index.html with FULL DOMAIN
-# This prevents Apache from trying to handle the directory and exposing the IP
-RewriteRule ^/?$ https://test.geniusdevelops.com/index.html [L,R=301]
+# 3. Force HTTPS (Hostinger/LiteSpeed usually sets X-Forwarded-Proto)
+RewriteCond %{HTTP:X-Forwarded-Proto} !https [NC]
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# 2. Force domain for any other request that isn't the correct domain
+# 4. Force Domain Name (Fix for IP showing up)
 RewriteCond %{HTTP_HOST} !^test\.geniusdevelops\.com$ [NC]
 RewriteRule ^(.*)$ https://test.geniusdevelops.com/$1 [L,R=301]
+
+# 5. Handle Root URL explicitly (Internal Rewrite, NO Redirect)
+RewriteRule ^/?$ index.html [L]
 
 # 3. URL Masking Examples (kept for reference)
 RewriteRule ^prueba$ index.html [L]
