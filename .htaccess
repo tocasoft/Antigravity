@@ -4,6 +4,9 @@ DirectoryIndex index.html
 # Enable Rewrite Engine
 RewriteEngine On
 
+# Force root URL to index.html (Fix for root not loading)
+RewriteRule ^$ index.html [L]
+
 # URL Masking Examples based on https://ultahost.com/knowledge-base/url-masking-using-htaccess/
 
 # 1. Simple URL masking
