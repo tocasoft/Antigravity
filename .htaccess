@@ -1,40 +1,13 @@
-# Prevent Apache from using the IP to construct self-referential URLs
-UseCanonicalName Off
-
-# Disable directory slashes to prevent mod_dir from redirecting to the IP
-DirectorySlash Off
-# Prevent directory listing
-Options -Indexes
-
 # Enable Rewrite Engine
 RewriteEngine On
 
-# Explicitly map the root to index.html
-RewriteRule ^/?$ index.html [L]
+# 1. Force root to redirect to index.html with FULL DOMAIN
+# This prevents Apache from trying to handle the directory and exposing the IP
+RewriteRule ^/?$ https://test.geniusdevelops.com/index.html [L,R=301]
 
-# Force the domain to be test.geniusdevelops.com (Fix for IP showing up)
-# If the host is NOT test.geniusdevelops.com, redirect to it.
+# 2. Force domain for any other request that isn't the correct domain
 RewriteCond %{HTTP_HOST} !^test\.geniusdevelops\.com$ [NC]
-RewriteCond %{HTTP_HOST} !^localhost$ [NC]
 RewriteRule ^(.*)$ https://test.geniusdevelops.com/$1 [L,R=301]
 
-# URL Masking Examples based on https://ultahost.com/knowledge-base/url-masking-using-htaccess/
-
-# 1. Simple URL masking
-# This will show the content of 'index.html' when the user visits 'prueba'
+# 3. URL Masking Examples (kept for reference)
 RewriteRule ^prueba$ index.html [L]
-
-# 2. Masking subdirectories
-# This will show 'actual-url/something' when user visits 'custom-url/something'
-# RewriteRule ^custom-url/(.*)$ actual-url/$1 [L]
-
-# 3. Masking dynamic URLs
-# This maps 'custom-url/value' to 'user.php?id=value'
-# RewriteRule ^custom-url/(.*)$ user.php?id=$1 [L]
-
-# -------------------------------------------------------------------------
-# Common Practical Example: Hide .html extension
-# This allows you to access 'contact' instead of 'contact.html'
-# RewriteCond %{REQUEST_FILENAME} !-d
-# RewriteCond %{REQUEST_FILENAME}.html -f
-# RewriteRule ^(.*)$ $1.html [L]
