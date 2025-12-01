@@ -1,3 +1,6 @@
+# Ensure index.html is served for the root URL
+DirectoryIndex index.html
+
 # Enable Rewrite Engine
 RewriteEngine On
 
