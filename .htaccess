@@ -4,8 +4,8 @@ RewriteEngine On
 # URL Masking Examples based on https://ultahost.com/knowledge-base/url-masking-using-htaccess/
 
 # 1. Simple URL masking
-# This will show the content of 'actual-url' when the user visits 'custom-url'
-RewriteRule ^custom-url$ actual-url [L]
+# This will show the content of 'index.html' when the user visits 'prueba'
+RewriteRule ^prueba$ index.html [L]
 
 # 2. Masking subdirectories
 # This will show 'actual-url/something' when user visits 'custom-url/something'
