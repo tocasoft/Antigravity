@@ -1,8 +1,17 @@
+# Prevent Apache from using the IP to construct self-referential URLs
+UseCanonicalName Off
+
 # Ensure index.html is served for the root URL
 DirectoryIndex index.html
 
 # Enable Rewrite Engine
 RewriteEngine On
+
+# Force the domain to be test.geniusdevelops.com (Fix for IP showing up)
+# If the host is NOT test.geniusdevelops.com, redirect to it.
+RewriteCond %{HTTP_HOST} !^test\.geniusdevelops\.com$ [NC]
+RewriteCond %{HTTP_HOST} !^localhost$ [NC]
+RewriteRule ^(.*)$ https://test.geniusdevelops.com/$1 [L,R=301]
 
 # Force root URL to index.html (Fix for root not loading)
 RewriteRule ^$ index.html [L]
